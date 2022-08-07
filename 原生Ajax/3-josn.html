@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         #result{
+            width: 200px;
+            height: 150px;
+            border: 1px solid pink;
+        }
+    </style>
+</head>
+<body>
+    <div id="result"></div>
+    <script>
+        // 获取元素
+        let result = document.querySelector('#result')
+        // 注册事件
+        window.addEventListener('click',function(){
+            // 定义xhr对象
+            let xhr = new XMLHttpRequest()
+            // 初始化请求和url
+            xhr.open('get','http://127.0.0.1:8000/server')
+            // 发送请求
+            xhr.send()
+            // 事务绑定
+            xhr.onreadystatechange = function(){
+                // 判断服务器返回了所有结果
+                if(xhr.readyState === 4){
+                    if(xhr.status >=200 && xhr.status <=300){   
+                        // 从服务端发送的数据是josn数据
+                        // 有两种转换方式：1.手动 2.自动
+                        let obj = JSON.parse(xhr.response)
+                        console.log(obj);
+                        result.innerHTML = obj.name
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

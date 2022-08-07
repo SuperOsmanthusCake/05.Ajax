@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+         #result{
+            width: 200px;
+            height: 150px;
+            border: 1px solid pink;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div id="result"></div>
+    <script>
+        // 获取元素
+        let result = document.querySelector('#result')
+
+        // 注册事件
+        result.addEventListener('mouseenter',function(){
+            // 发起post请求 共4步
+            // 1.创建xhr对象
+            let xhr = new XMLHttpRequest()
+            // 2.初始化请求方法
+            xhr.open('post','http://127.0.0.1:8000/server')
+            // 设置请求头信息
+            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+            xhr.setRequestHeader('name','atguigu')
+            // 3.发送 这里可以发送post数据
+            xhr.send(123456)
+            // 4.事务绑定
+            xhr.onreadystatechange = function(){
+                // 判断服务器返回了所有结果
+                if(xhr.readyState === 4){
+                    // 判断状态码
+                    if(xhr.status >= 200 && xhr.status<300){
+                        result.innerHTML = 'hello express'
+                    }
+                }
+            }
+
+        })
+    </script>
+</body>
+</html>

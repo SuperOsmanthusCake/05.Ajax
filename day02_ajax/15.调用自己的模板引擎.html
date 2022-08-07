@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/template.js"></script>
+</head>
+<body>
+    <div id="father"></div>
+    <script id="user" type="text/html">
+        <div>姓名：{{name}}</div>
+        <div>年龄：{{age}}</div>
+        <div>性别：{{sex}}</div>
+        <div>QQ号：{{qq}}</div>
+    </script>
+    <script>
+        // 2.定义数据
+        let date = {name: '超级桂花糕',age: 21,sex: '男',qq: '2360680744'}
+        // 3.创建封装的template函数
+        let tem = template('user',date)
+        // 4.渲染页面
+        document.querySelector('#father').innerHTML= tem
+    </script>
+</body>
+</html>

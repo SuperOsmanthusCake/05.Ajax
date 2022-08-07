@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 1.导入模板引擎 -->
+    <script src="./js/template-web.js"></script>
+    <script src="./lib/jquery.js"></script>
+</head>
+<body>
+    <div id="container"></div>
+
+    <!-- 3.定义模板 -->
+    <script type="text/html" id="user">
+        <h1>art-template</h1>
+        <h2>姓名：{{name}}</h2>
+        <h2>年龄：{{age}}</h2>
+        <h3>{{@ test}}</h3>
+        <div>
+            {{if flag === 0}}
+                flaga的值为0
+            {{else if flag === 1}}
+                flaga的值为1
+            {{/if}}
+        </div>
+        <ul>
+            {{each hobby}}
+                <li>索引是：{{$index}},循环项是：{{$value}}</li>
+            {{/each}}
+        </ul>
+        
+        <!-- 这里使用了过滤器  -->
+        <h3>{{regTime | dateFormat}}</h3>
+    </script>
+    <script>
+    // 这个过滤器要定义在调用template函数前
+    template.defaults.imports.dateFormat = function(date){
+        let year = date.getFullYear()
+        let month = date.getMonth()+1
+        let day = date.getDate() 
+        let week = date.getDay()
+        let hours = date.getHours()
+        let min = date.getMinutes()
+        let s = date.getSeconds()
+        return year+'年'+month+'月'+day+'日 星期:'+week+' '+hours+':'+min+':'+s
+    }
+    // 2.定义需要渲染的数据
+    let data = { name: '超级桂花糕', age: 20, test: '<h3>这里的@</h3>', flag: 1, hobby: ['吃饭', '睡觉', '写代码'], regTime: new Date() }
+
+    // 4.调用template函数
+    let htmlStr = template('user',data)
+    // 5.渲染HTML结构
+    // $('#container').html(htmlStr)
+    document.querySelector('#container').innerHTML = htmlStr
+    </script>
+
+
+</body>
+</html>

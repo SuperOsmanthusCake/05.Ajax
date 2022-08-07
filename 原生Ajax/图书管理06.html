@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./lib/bootstrap.css">
+    <link rel="stylesheet" href="./lib/jquery.js">
+
+</head>
+<body style="padding: 15px">
+    
+    <div class="panel panel-primary">
+          <div class="panel-heading">
+                <h3 class="panel-title">添加图书</h3>
+          </div>
+          <div class="panel-body form-inline">
+                
+                <div class="input-group">
+                    <div class="input-group-addon">书名</div>
+                    <input type="text" class="form-control" id="bookName" placeholder="请输入书名">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-addon">作者</div>
+                    <input type="text" class="form-control" id="bookAuthor" placeholder="请输入作者">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-addon">出版地</div>
+                    <input type="text" class="form-control" id="bookPublisher" placeholder="请输入出版地">
+                </div>
+                <button id="btnadd" class="btn btn-primary">
+                    添加
+                </button>
+          </div>
+    </div>
+
+    
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>书名</th>
+                <th>作者</th>
+                <th>出版社</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <script>
+        // 获取数据渲染父元素
+        let tbody = document.querySelector('tbody')
+        // 获取服务器数据并渲染
+        function getBookList() {
+            // 创建xhr对象
+            let xhr = new XMLHttpRequest()
+            // 设置方式和url
+            xhr.open('get','http://www.liulongbin.top:3006/api/getbooks')
+            // 我们通过代码告诉请求代理对象，服务端响应给我们的是 JSON
+            xhr.responseType = 'json'
+            // 发送请求
+            xhr.send()
+            // 绑定事件 也会异步处理
+            xhr.onreadystatechange = function(){
+                let arry = []
+                // 判断服务器返回了所有结果 0 1 2 3 4
+                if(xhr.readyState === 4){
+                    // 判断相应状态码
+                    if(xhr.status >= 200 && xhr.status <= 300){
+                        // 处理结果 行 头 空行 体
+                        // 相应行
+                        console.log(xhr.status);  //状态码
+                        console.log(xhr.statusText); //状态字符串
+                        console.log(xhr.getAllResponseHeaders); //获取所有的响应头
+                        // let obj = JSON.parse(xhr.response)//响应体 手动
+                        let obj = xhr.response //自动
+                        arry = obj.data
+                        console.log(obj.data);
+                    }else{
+                        alert('数据获取失败！')
+                    }
+                }
+
+                // 渲染数据
+                for(let i = 0 ; i <arry.length; i++){
+                    // 创建一个元素tr
+                    let tr = document.createElement('tr')
+                    // 添加元素
+                    tbody.appendChild(tr)
+                    tr.innerHTML = `
+                    <td>${arry[i].id}</td>
+                    <td>${arry[i].bookname}</td>
+                    <td>${arry[i].author}</td>
+                    <td>${arry[i].publisher}</td>
+                    <td>
+                        <a href="#" class="del" data-id="">删除</a>
+                    </td>
+                `
+                }
+                
+            }
+        }
+        getBookList()
+        
+// 使用同步的ajax比较麻烦 渲染函数可以写在ajax函数里面
+    </script>
+</body>
+</html>
+
